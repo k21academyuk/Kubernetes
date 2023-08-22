@@ -5,21 +5,21 @@ metadata:
 spec:
   volumes:
   - name: html
-    emptyDir: {}
+    emptyDir: {}                         # Define a volume named "html" with an empty directory.
   containers:
   - name: 1st
     image: nginx
     volumeMounts:
     - name: html
-      mountPath: /usr/share/nginx/html
+      mountPath: /usr/share/nginx/html   # Mount the "html" volume into this container at "/usr/share/nginx/html".
   - name: 2nd
     image: debian
     volumeMounts:
     - name: html
-      mountPath: /html
-    command: ["/bin/sh", "-c"]
+      mountPath: /html                   # Mount the "html" volume into this container at "/html".
+    command: ["/bin/sh", "-c"]           # Specify the command to run when starting this container.
     args:
       - while true; do
           date >> /html/index.html;
           sleep 1;
-        done
+        done                            # Define the arguments to be passed to the command. In this case, it's a loop that appends the current date to the "/html/index.html" file every second.
