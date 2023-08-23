@@ -1,27 +1,26 @@
-apiVersion: v1
-kind: Pod
-metadata: 
-  name: webserver
+apiVersion: v1               
+kind: Pod                   
+metadata:
+  name: webserver                            # Name of the Pod.
 spec:
   volumes:
-  - name: nginx-conf
+  - name: nginx-conf                         # Define a volume named 'nginx-conf'.
     configMap:
-      name: nginx-conf
+      name: nginx-conf                       # Reference the ConfigMap named 'nginx-conf'.
       items:
-      - key: default.conf
-        path: default.conf
+      - key: default.conf                    # Specify the key 'default.conf' from the ConfigMap.
+        path: default.conf                   # Mount it at the path '/etc/nginx/conf.d/default.conf'.
   containers:
-  - name: webserver
-    image: nginx
+  - name: webserver                          # First container named 'webserver'.
+    image: nginx                             # Use the 'nginx' Docker image.
     ports:
-    - containerPort: 80
+    - containerPort: 80                      # Expose port 80 from the container.
     volumeMounts:
     - mountPath: /etc/nginx/conf.d
-      name: nginx-conf
-      readOnly: true
-  - name: adapter
-    image: nginx/nginx-prometheus-exporter:0.4.2
-    args: ["-nginx.scrape-uri","http://localhost/nginx_status"]
+      name: nginx-conf                       # Mount the 'nginx-conf' volume into the container.
+      readOnly: true                         # Mount it as read-only.
+  - name: adapter                            # Second container named 'adapter'.
+    image: nginx/nginx-prometheus-exporter:0.4.2  # Use the exporter image.
+    args: ["-nginx.scrape-uri","http://localhost/nginx_status"]      # Pass arguments to the exporter.
     ports:
-    - containerPort: 9113
-
+    - containerPort: 9113                    # Expose port 9113 from the container.
