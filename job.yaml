@@ -1,17 +1,17 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: countdown
-spec:
-  template:
-    metadata:
-      name: countdown
-    spec:
+  name: countdown                  # The name of the Job resource, which is "countdown".
+spec:                              # The spec section defines the specification of the Job.
+  template:                        # The template section specifies the pod template for the job.
+    metadata:                      # Metadata specific to the pod template.
+      name: countdown              # The name of the pod template, which is "countdown".
+    spec:                          # The specification for the pod template.
       containers:
       - name: counter
         image: centos:7
-        command:
-         - "bin/bash"
-         - "-c"
-         - "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"
-      restartPolicy: Never
+        command:                   # The command to run inside the container.
+         - "bin/bash"              # Specifies the shell to use.
+         - "-c"                    # Indicates that the following command will be run in the shell.
+         - "for i in 9 8 7 6 5 4 3 2 1 ; do echo $i ; done"  # The actual command to execute, counting down from 9 to 1.
+      restartPolicy: Never         # Specifies the restart policy for the pod, which is "Never". This means the pod won't be restarted if it exits.
