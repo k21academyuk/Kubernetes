@@ -1,18 +1,18 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello
+  name: hello                       # The name of the CronJob resource, which is "hello".
 spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
+  schedule: "*/1 * * * *"           # The schedule at which the job should run, in cron format (every minute in this case).
+  jobTemplate:                      # The jobTemplate section specifies the template for the jobs created by the CronJob.
+    spec:                           # The specification of the template for the jobs.
+      template:                     # The template section defines the pod template for the job.
+        spec:                       # The specification for the pod.
           containers:
           - name: hw
             image: busybox
-            args:
+            args:                  # The arguments to pass to the container's entrypoint.
             - /bin/sh
             - -c
-            - echo Hello World!
-          restartPolicy: OnFailure
+            - echo Hello World!    # A command that the container will run, echoing "Hello World!".
+          restartPolicy: OnFailure # Specifies the restart policy for the pod, which is "OnFailure".
