@@ -34,4 +34,4 @@ data:
             }                              # Close the 'location' block.
         }                                  # Close the 'server' block.
     }                                      # Close the 'http' block.
-  }                                        # Close the 'nginx.conf' content.
+                                    
