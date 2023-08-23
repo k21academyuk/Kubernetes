@@ -1,22 +1,22 @@
-apiVersion: v1
-kind: Pod
+apiVersion: v1               
+kind: Pod                   
 metadata:
-  name: mc3
+  name: mc3                              # Name of the Pod.
   labels:
-    app: mc3
+    app: mc3                             # Labels for identifying the Pod.
 spec:
   containers:
-  - name: webapp
-    image: training/webapp
-  - name: nginx
-    image: nginx:alpine
+  - name: webapp             
+    image: training/webapp   
+  - name: nginx             
+    image: nginx:alpine     
     ports:
-    - containerPort: 80
+    - containerPort: 80     
     volumeMounts:
     - name: nginx-proxy-config
-      mountPath: /etc/nginx/nginx.conf
+      mountPath: /etc/nginx/nginx.conf  # Mount the nginx.conf file from the ConfigMap.
       subPath: nginx.conf
   volumes:
-  - name: nginx-proxy-config
+  - name: nginx-proxy-config            # Define a volume named 'nginx-proxy-config'.
     configMap:
-      name: mc3-nginx-conf
+      name: mc3-nginx-conf              # Reference the ConfigMap named 'mc3-nginx-conf'.
