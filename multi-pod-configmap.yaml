@@ -1,40 +1,28 @@
 apiVersion: v1               
 kind: ConfigMap             
-
 metadata:                    
   name: mc3-nginx-conf                     # The name of the ConfigMap.
-
 data:                                      # Data section where you define key-value pairs.
   nginx.conf: |-
     user  nginx;                           # Set the user for the Nginx process to 'nginx'.
     worker_processes  1;                   # Configure one worker process for Nginx.
-
     error_log  /var/log/nginx/error.log warn;
                                            # Define the location for error logs.
-
     pid        /var/run/nginx.pid;
                                            # Define the location for the process ID file.
-
     events {                               # Configure event handling for Nginx.
         worker_connections  1024;          # Limit the number of connections per worker.
-
     http {                                 # Configure HTTP settings for Nginx.
         include       /etc/nginx/mime.types;
                                            # Include the MIME types configuration.
-
         default_type  application/octet-stream;
                                            # Set the default MIME type for responses.
-
         sendfile        on;                # Enable the use of sendfile for sending files efficiently.
-
         keepalive_timeout  65;             # Set the timeout for keep-alive connections.
-
         upstream webapp {                  # Define an upstream server named 'webapp'.
             server 127.0.0.1:5000;         # Configure the address and port of the upstream server.
-
         server {                           # Configure an HTTP server block.
             listen 80;                     # Listen on port 80 for incoming HTTP requests.
-
             location / {                   # Define a location block for the root path.
                 proxy_pass         http://webapp;
                                            # Proxy incoming requests to the 'webapp' upstream server.
