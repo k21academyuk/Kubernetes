@@ -1,24 +1,23 @@
-apiVersion: v1
-kind: ConfigMap
+apiVersion: v1               
+kind: ConfigMap               
 metadata:
-  name: nginx-conf
+  name: nginx-conf                    # Name of the ConfigMap.
 data:
-  default.conf: |
-    server {
-      listen       80;
-      server_name  localhost;
-      location / {
-          root   /usr/share/nginx/html;
-          index  index.html index.htm;
+  default.conf: |                     # Data section contains the Nginx configuration.
+    server {                          # Define an Nginx server block.
+      listen       80;                # Listen on port 80.
+      server_name  localhost;         # Set the server name to 'localhost'.
+      location / {                    # Define a location block for the root path.
+          root   /usr/share/nginx/html;  # Serve content from this directory.
+          index  index.html index.htm;   # Specify default index files.
       }
-      error_page   500 502 503 504  /50x.html;
+      error_page   500 502 503 504  /50x.html;  # Define error pages for specific codes.
       location = /50x.html {
-          root   /usr/share/nginx/html;
+          root   /usr/share/nginx/html;         # Specify the location of the error page.
       }
-      location /nginx_status {
-        stub_status;
-        allow 127.0.0.1;  #only allow requests from localhost
-        deny all;   #deny all other hosts 
+      location /nginx_status {                  # Define a location block for '/nginx_status'.
+        stub_status;                            # Enable Nginx status module.
+        allow 127.0.0.1;                        # Allow requests only from localhost.
+        deny all;                               # Deny all other hosts.
       }
     }
-
