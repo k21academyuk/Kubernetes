@@ -1,8 +1,8 @@
-apiVersion: v1               
-kind: ConfigMap             
-metadata:                    
-  name: mc3-nginx-conf                     # The name of the ConfigMap.
-data:                                      # Data section where you define key-value pairs.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mc3-nginx-conf
+data:
   nginx.conf: |-
     user  nginx;                           # Set the user for the Nginx process to 'nginx'.
     worker_processes  1;                   # Configure one worker process for Nginx.
@@ -12,6 +12,8 @@ data:                                      # Data section where you define key-v
                                            # Define the location for the process ID file.
     events {                               # Configure event handling for Nginx.
         worker_connections  1024;          # Limit the number of connections per worker.
+    }                                      # Close the 'events' block.
+
     http {                                 # Configure HTTP settings for Nginx.
         include       /etc/nginx/mime.types;
                                            # Include the MIME types configuration.
@@ -21,14 +23,15 @@ data:                                      # Data section where you define key-v
         keepalive_timeout  65;             # Set the timeout for keep-alive connections.
         upstream webapp {                  # Define an upstream server named 'webapp'.
             server 127.0.0.1:5000;         # Configure the address and port of the upstream server.
+        }                                  # Close the 'upstream' block.
+        
         server {                           # Configure an HTTP server block.
             listen 80;                     # Listen on port 80 for incoming HTTP requests.
             location / {                   # Define a location block for the root path.
                 proxy_pass         http://webapp;
                                            # Proxy incoming requests to the 'webapp' upstream server.
                 proxy_redirect     off;    # Disable automatic redirection of proxy responses.
-
-            }                
-        }                   
-    }                       
-  }                          
+            }                              # Close the 'location' block.
+        }                                  # Close the 'server' block.
+    }                                      # Close the 'http' block.
+  }                                        # Close the 'nginx.conf' content.
