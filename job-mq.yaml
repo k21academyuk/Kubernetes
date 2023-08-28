@@ -1,20 +1,21 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: job-wq-1
+  name: job-wq-1  # The name of the Job.
 spec:
-  completions: 8
-  parallelism: 2
+  completions: 8  # The total number of completions required for the Job.
+  parallelism: 2  # The number of completions to run in parallel at any given time.
   template:
     metadata:
-      name: job-wq-1
+      name: job-wq-1  # The name of the pod template used by this Job.
     spec:
       containers:
-      - name: c
-        image: mamtaj/job-wq-1
+      - name: c  # Name of the container within the pod.
+        image: 11905510/job-wq-1  # The Docker image used for this container.(Replace with you image that you pushed into Dockerhub
         env:
         - name: BROKER_URL
-          value: amqp://guest:guest@rabbitmq-service:5672
+          value: amqp://guest:guest@rabbitmq-service:5672  # Environment variable for RabbitMQ connection URL.
         - name: QUEUE
-          value: job1
-      restartPolicy: OnFailure
+          value: job1  # Environment variable for the queue name.
+      restartPolicy: OnFailure  # Defines that the pod should be restarted on failure.
+
