@@ -2,25 +2,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    component: rabbitmq
-  name: rabbitmq-deployment
+    component: rabbitmq   # Labels for identifying and categorizing this deployment.
+  name: rabbitmq-deployment  # The name of the deployment.
 spec:
-  replicas: 1
+  replicas: 1           # Specifies that one replica (one pod) of RabbitMQ should be maintained.
   selector:
     matchLabels:
-      app: taskQueue
-      component: rabbitmq
+      app: taskQueue     # Selects pods with the label "app" set to "taskQueue."
+      component: rabbitmq  # Selects pods with the label "component" set to "rabbitmq."
   template:
     metadata:
       labels:
-        app: taskQueue
+        app: taskQueue  # Labels for pods created by this deployment.
         component: rabbitmq
     spec:
       containers:
-      - image: rabbitmq
-        name: rabbitmq
+      - image: rabbitmq  # Specifies the Docker image to use for the RabbitMQ container.
+        name: rabbitmq   # Name of the container.
         ports:
-        - containerPort: 5672
+        - containerPort: 5672  # Specifies that the container listens on port 5672 (RabbitMQ's default port).
         resources:
           limits:
-            cpu: 100m
+            cpu: 100m   # Specifies CPU resource limits for the container.
