@@ -1,18 +1,19 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: process-item-$ITEM
+  name: process-item-$ITEM  # The name of the Job, where $ITEM is a variable (will be replaced with actual item name during creation).
   labels:
-    jobgroup: jobexample
+    jobgroup: jobexample    # Labels for identifying and grouping Jobs.
 spec:
-  template:
+  template:                 # Specifies the pod template for the Job.
     metadata:
-      name: jobexample
+      name: jobexample      # Name of the template.
       labels:
-        jobgroup: jobexample
+        jobgroup: jobexample # Labels for identifying and grouping pods created by this template.
     spec:
       containers:
-      - name: c
-        image: busybox
+      - name: c             # Name of the container within the pod.
+        image: busybox      # Docker image used for this container.
         command: ["sh", "-c", "echo Processing item $ITEM && sleep 5"]
-      restartPolicy: Never
+                            # The command to execute within the container, which echoes a message and sleeps for 5 seconds.
+      restartPolicy: Never  # Defines that the pod should never be restarted if it terminates (Job behavior).
