@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: c  # Name of the container within the pod.
-        image: 11905510/job-wq-1  # The Docker image used for this container.(Replace with you image that you pushed into Dockerhub)
+        image: siramkarthik/job-wq-1  # The Docker image used for this container.(Replace with you image that you pushed into Dockerhub)
         env:
         - name: BROKER_URL
           value: amqp://guest:guest@rabbitmq-service:5672  # Environment variable for RabbitMQ connection URL.
