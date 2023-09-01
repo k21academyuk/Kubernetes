@@ -1,51 +1,71 @@
-# Define a headless service named "sts-service"
 apiVersion: v1
 kind: Service
 metadata:
   name: sts-service
 spec:
   selector:
-    app: my-app  # Select pods with label "app: my-app"
-  clusterIP: None  # Create a headless service (no cluster IP)
+    app: my-app
   ports:
+    - name: k21-port
+      protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080
     - name: mysql-port
       protocol: TCP
       port: 3306
       targetPort: 3306
+      nodePort: 30306
+  type: NodePort
 
-# Define a StatefulSet named "web-statefulset"
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: web-statefulset
 spec:
-  serviceName: sts-service  # Use the headless service for network identity
-  replicas: 3  # Create 3 replicas of the pods
+  serviceName: sts-service
+  replicas: 3
   selector:
     matchLabels:
-      app: my-app  # Select pods with label "app: my-app"
+      app: my-app
   template:
     metadata:
       labels:
-        app: my-app  # Apply label "app: my-app" to the pod
+        app: my-app
     spec:
       containers:
-        - name: mysql-container
-          image: mysql:latest  # Use the latest MySQL image
+        - name: my-container
+          image: 11905510/k21academy:1.0
           ports:
-            - containerPort: 3306  # Open port 3306 inside the container
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-volume
+              mountPath: /var/www/html
+        - name: mysql-container
+          image: mysql:latest
+          ports:
+            - containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: mypassword  # Set the root password for MySQL
+              value: mypassword
           volumeMounts:
             - name: mysql-volume
-              mountPath: /var/lib/mysql  # Mount storage volume
+              mountPath: /var/lib/mysql
   volumeClaimTemplates:
+    - metadata:
+        name: nginx-volume
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName:  managed-nfs-storage
+        resources:
+          requests:
+            storage: 1Gi
     - metadata:
         name: mysql-volume
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName:  managed-nfs-storage  # Use NFS storage class
+        storageClassName:  managed-nfs-storage
         resources:
           requests:
-            storage: 2Gi  # Request 2GB of storage
+            storage: 2Gi
