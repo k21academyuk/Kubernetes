@@ -1,28 +1,38 @@
-apiVersion: apps/v1
-kind: Deployment
+# Introduction:
+# This YAML file is used to create a Deployment in a Kubernetes cluster. The Deployment will manage a single pod
+# containing an Nginx container. Resource requests and limits are specified to manage the container's CPU and memory usage.
+
+apiVersion: apps/v1  # The API version for creating the Deployment resource
+kind: Deployment     # Indicates this is a Deployment resource
 metadata:
-  name: nginx-hpa
+  name: nginx-hpa    # The name of the Deployment
   labels:
-    app: nginx-hpa
+    app: nginx-hpa  # Label for categorizing the Deployment
+
 spec:
-  replicas: 1
+  replicas: 1       # The initial number of pod replicas
   selector:
     matchLabels:
-      app: nginx-hpa
-  template:
+      app: nginx-hpa  # Identifies the set of pods to manage using this label
+
+  template:         # Template for creating new pod replicas
     metadata:
       labels:
-        app: nginx-hpa
+        app: nginx-hpa  # Labels assigned to pods created from this template
     spec:
       containers:
-      - name: nginx-cont
-        image: nginx
+      - name: nginx-cont  # Container name
+        image: nginx      # Container image
         ports:
-        - containerPort: 80
+        - containerPort: 80  # Port exposed by the container
         resources:
-         limits:
-           cpu: 300m
-           memory: 200Mi
-         requests:
-           cpu: 150m
-           memory: 100Mi
+         limits:         # Maximum resources the container can utilize
+           cpu: 300m     # Maximum CPU
+           memory: 200Mi # Maximum memory
+         requests:       # Resources requested for the container deployment
+           cpu: 150m     # Requested CPU
+           memory: 100Mi # Requested memory
+
+# Conclusion:
+# This YAML deploys a pod containing an Nginx container with specified CPU and memory requests and limits,
+# ensuring efficient resource utilization. The Deployment ensures the pod is running and can be scaled as needed.
