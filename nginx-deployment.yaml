@@ -1,5 +1,7 @@
-# This YAML file is used to create a Deployment resource in Kubernetes.
-# Deployment ensures that a specified number of pod replicas are running at any given time.
+# Introduction:
+# This YAML file defines a Deployment for an Nginx application within a Kubernetes cluster. The Deployment will ensure
+# that a specified number of replica Pods are maintained, each running the Nginx container. This setup is ideal for 
+# hosting a static website or as a reverse proxy server.
 
 apiVersion: apps/v1  # Specifies the API version to use
 kind: Deployment     # Indicates that this is a Deployment resource
@@ -25,6 +27,6 @@ spec:
         ports:
         - containerPort: 80  # Port to expose on the container
 
-
-# This Deployment will ensure that 2 replicas of Pods running the nginx:1.12 image are always running.
-# The Pods will be selected and managed by this Deployment based on the "app=nginx" label.
+# Conclusion:
+# This Deployment ensures that two Pods running the Nginx 1.12 version are always available. By labeling these Pods with 
+# "app=nginx", it’s easy to manage and scale the application as necessary. Ports 80 are exposed to allow HTTP traffic to the Nginx server.
