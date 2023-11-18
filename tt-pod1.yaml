@@ -5,9 +5,13 @@ metadata:
 spec:
   containers:
    - name: nginx
-     image: nginx 
+     image: nginx
   tolerations:
-  - key: "disktype"
-    operator: "Equal" 
-    value: "magnetic"
-    effect: "NoSchedule"
+    - key: "disktype"
+      # 'key': Specifies the taint key that the pod can tolerate. 
+      operator: "Equal"
+      # 'operator': Defines how to match the taint. 'Equal' means exact match with the taint value.
+      value: "magnetic"
+      # 'value': The specific taint value the pod can tolerate (here, 'magnetic').
+      effect: "NoSchedule"
+      # 'effect': The taint effect that the pod can tolerate. 'NoSchedule' allows the pod on a node with the specified taint.
