@@ -1,23 +1,38 @@
-apiVersion: apps/v1
-kind: Deployment
+# Introduction:
+# This YAML is a Kubernetes configuration for a 'Deployment'. It's a blueprint that tells Kubernetes how to deploy and manage an application, in this case, an Nginx web server.
+
+apiVersion: apps/v1       # Specifies the API version of Kubernetes being used for this deployment.
+
+kind: Deployment          # 'Deployment' is a type of resource in Kubernetes that manages a set of replica Pods.
+
 metadata:
-  name: nginx-deployment
+  name: nginx-deployment  # The name of the deployment, here it's 'nginx-deployment'.
   labels:
-    app: nginx
+    app: nginx            # These are labels, like tags, used to identify and organize Kubernetes resources.
+
 spec:
-  replicas: 2
+  replicas: 2             # Indicates the number of Nginx server instances (replicas) that should be running.
+
   selector:
     matchLabels:
-      app: nginx
-  template:
+      app: nginx          # This selector tells the Deployment which Pods it should manage, identified by labels.
+
+  template:               # Defines the blueprint for creating the Pods.
     metadata:
       labels:
-        app: nginx
+        app: nginx        # Labels for the Pods; these should match the selector's matchLabels.
+
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.12
+      - name: nginx                # Name of the container inside each Pod.
+        image: nginx:1.12          # The Docker image to use for the container.
         ports:
-        - containerPort: 80
+        - containerPort: 80        # The port that the Nginx server listens on.
+
       nodeSelector:
-        disktype: ssd
+        disktype: ssd              # This line is a key-value pair label. It tells K8s Scheduler to place these Pods only on nodes labeled with 'disktype: ssd'. It's a way to select specific nodes for these Pods.
+
+# Conclusion:
+# In summary, this deployment configuration sets up 2 instances of an Nginx web server in the Kubernetes cluster.
+# The 'nodeSelector' is used to ensure that these instances run on specific nodes labeled 'disktype: ssd'.
+# This setup is crucial for distributing the application to the appropriate resources in the cluster.
