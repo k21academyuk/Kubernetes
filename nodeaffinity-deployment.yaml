@@ -19,13 +19,13 @@ spec:
         image: nginx:1.12
         ports:
         - containerPort: 80
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
+      affinity:                                # Node affinity settings for the deployment.
+        nodeAffinity:                          # This section specifies conditions for node selection in the cluster.
+          preferredDuringSchedulingIgnoredDuringExecution:  #It signifies a scheduling preference for Pods that is considered during placement but not enforced after the Pod is running.
           - weight: 1
             preference:
               matchExpressions:
               - key: disktype
                 operator: In
                 values:
-                - ssd
+                - ssd                 # The Pods prefer nodes labeled with 'disktype:ssd'. Nodes with this label are chosen if available.
