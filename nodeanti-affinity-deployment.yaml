@@ -21,11 +21,16 @@ spec:
         - containerPort: 80
       affinity:
         nodeAffinity:
+          # 'preferredDuringSchedulingIgnoredDuringExecution': This is a setting for Pod placement.
+          # It sets preferences for the scheduler to consider when placing the Pod, but these are not strict requirements.
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
+            # 'weight': This assigns a priority to the preference. Weights can range from 1 to 100, with lower numbers being less preferred.
             preference:
               matchExpressions:
               - key: disktype
+                # 'operator: NotIn': This selects nodes that do NOT match the specified values. It's the opposite of 'In'.
                 operator: NotIn
                 values:
                 - ssd
+                # 'values: [ssd]': The Pod prefers to be scheduled on nodes that do not have the label 'disktype: ssd'.
