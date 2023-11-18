@@ -21,10 +21,14 @@ spec:
         - containerPort: 80
       affinity:
         nodeAffinity:
+          # 'requiredDuringSchedulingIgnoredDuringExecution' enforces a strict rule for Pod scheduling:
+          # Pods must be scheduled on nodes that satisfy the specified conditions.
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms: 
             - matchExpressions:
               - key: disktype
+                # 'operator: NotIn' means selecting nodes that do not have the specified label values.
                 operator: NotIn
                 values:
                 - ssd
+                # 'values: [ssd]' here means Pods must not be scheduled on nodes labeled with 'disktype: ssd'.
