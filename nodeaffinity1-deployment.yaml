@@ -21,6 +21,7 @@ spec:
         - containerPort: 80
       affinity:
         nodeAffinity:
+        # 'requiredDuringSchedulingIgnoredDuringExecution': Pods must be scheduled on nodes with 'disktype: ssd', but post-scheduling changes in nodes don't affect existing Pods.
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
