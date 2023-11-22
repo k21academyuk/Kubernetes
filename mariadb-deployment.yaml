@@ -1,45 +1,45 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: apps/v1    # Define the API version for this Kubernetes resource, specifying apps/v1 for Deployments.
+kind: Deployment       # Specify the kind of resource, in this case, a Deployment.
 metadata:
   labels:
-    app: mariadb
-  name: mariadb-deployment
+    app: mariadb       # Labels for the Deployment to identify it as part of the "mariadb" application.
+  name: mariadb-deployment  # Name of the Deployment.
 spec:
-  replicas: 1
+  replicas: 1          # Number of replicas (pods) to maintain for the Deployment.
   selector:
     matchLabels:
-      app: mariadb
+      app: mariadb     # Selector to match labels for the pods controlled by this Deployment.
   template:
     metadata:
       labels:
-        app: mariadb
+        app: mariadb   # Labels for the pods created by this Deployment.
     spec:
       containers:
-      - image: docker.io/mariadb:10.4
-        name: mariadb
+      - image: docker.io/mariadb:10.4  # Container image to use for the MariaDB instance.
+        name: mariadb                  # Name of the container.
         env:
-          - name: MYSQL_ROOT_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD  # Set the environment variable for the MariaDB root password.
             valueFrom:
               secretKeyRef:
-                name: mariadb-root-password
+                name: mariadb-root-password  # Reference to the Secret containing the MariaDB root password.
                 key: password
         envFrom:
         - secretRef:
-            name: mariadb-user-creds
+            name: mariadb-user-creds    # Reference to a Secret containing additional MariaDB user credentials.
         ports:
-        - containerPort: 3306
+        - containerPort: 3306           # Port on which the MariaDB service is exposed within the container.
           protocol: TCP
         volumeMounts:
-        - mountPath: /var/lib/mysql
+        - mountPath: /var/lib/mysql     # Mount path for the MariaDB data directory.
           name: mariadb-volume-1
-        - mountPath: /etc/mysql/conf.d
+        - mountPath: /etc/mysql/conf.d  # Mount path for MariaDB configuration.
           name: mariadb-config-volume
       volumes:
-      - emptyDir: {}
+      - emptyDir: {}                    # EmptyDir volume for temporary storage within the pod.
         name: mariadb-volume-1
       - configMap:
-          name: mariadb-config
+          name: mariadb-config          # ConfigMap containing additional MariaDB configuration.
           items:
-            - key: max_allowed_packet.cnf
+            - key: max_allowed_packet.cnf  # Key within the ConfigMap specifying the configuration file.
               path: max_allowed_packet.cnf
         name: mariadb-config-volume
