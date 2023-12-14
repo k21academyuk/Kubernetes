@@ -1,14 +1,15 @@
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolume                    # This is a PersistentVolume resource
 metadata:
-  name: pvvol-1
+  name: pvvol-1                           # The name of the PersistentVolume is set to "pvvol-1"
 spec:
   capacity:
-    storage: 1Gi
+    storage: 1Gi                          # The storage capacity of the PersistentVolume is set to 1 gigabyte
   accessModes:
-  - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+  - ReadWriteMany                         # The access mode is set to ReadWriteMany, indicating multiple nodes can read and write
+  persistentVolumeReclaimPolicy: Retain   # Specifies that the data should be retained even after the PersistentVolume claim is deleted
   nfs:
-    path: /opt/sfw
-    server: kubeadm-master
-    readOnly: false
+    path: /opt/sfw                        # The NFS path where the volume is mounted
+    server: master   # Enter you master node name or ip address here
+    readOnly: false  # The NFS share is configured as read-write
+
