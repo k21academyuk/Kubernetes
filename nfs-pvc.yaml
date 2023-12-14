@@ -1,10 +1,10 @@
-kind: PersistentVolumeClaim
+kind: PersistentVolumeClaim  # This is a PersistentVolumeClaim resource
 apiVersion: v1
 metadata:
-  name: nfs-claim
+  name: nfs-claim  # The name of the PersistentVolumeClaim is set to "nfs-claim"
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteMany  # The access mode is set to ReadWriteMany, indicating multiple nodes can read and write
   resources:
     requests:
-      storage: 500Mi
+      storage: 500Mi  # The requested storage capacity for the PersistentVolumeClaim is 500 megabytes
