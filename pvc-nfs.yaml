@@ -1,11 +1,11 @@
-apiVersion: v1
+apiVersion: v1                                # Define API version and kind of Kubernetes object
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc1
+  name: pvc1                                  # Set the name for the PersistentVolumeClaim
 spec:
-  storageClassName: managed-nfs-storage
+  storageClassName: managed-nfs-storage       # Define storage class for dynamic provisioning
   accessModes:
-    - ReadWriteMany
+    - ReadWriteMany                           # Allows multiple nodes to read and write
   resources:
     requests:
-      storage: 2Gi
+      storage: 2Gi                            # Request 2 gigabytes of storage
