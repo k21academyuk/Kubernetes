@@ -1,17 +1,15 @@
-apiVersion: v1
+apiVersion: v1                                 # Define API version and kind of Kubernetes object
 kind: Pod
 metadata:
-  name: web-server
+  name: web-server                              # Set the name for the Pod
 spec:
   containers:
-  - image: nginx
-    name: web-container
-
+  - image: nginx                                # Use nginx image for the container
+    name: web-container                         # Name the container as "web-container"
     volumeMounts:
-    - name: nfs-volume
-      mountPath: /usr/share/nginx/html
-
+    - name: nfs-volume                          # Use volume named "nfs-volume"
+      mountPath: /usr/share/nginx/html          # Mount volume at this path inside the container
   volumes:
-  - name: nfs-volume
+  - name: nfs-volume                            # Define a volume named "nfs-volume"
     persistentVolumeClaim:
-      claimName: pvc1
+      claimName: pvc1                           # Attach PersistentVolumeClaim named "pvc1" to this volume
