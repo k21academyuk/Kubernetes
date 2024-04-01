@@ -1,11 +1,12 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: azure-managed-disk
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: managed-premium
-  resources:
-    requests:
-      storage: 2Gi
+apiVersion: v1                         # The version of the Kubernetes API to use
+kind: PersistentVolumeClaim            # Specifies that this is a PersistentVolumeClaim resource
+metadata:                              
+  name: azure-managed-disk             # The name of the PersistentVolumeClaim within the Kubernetes cluster
+spec:                                  
+  accessModes:                         
+  - ReadWriteOnce                      # The access mode of the storage. ReadWriteOnce means the volume can be mounted as read-write by a single node
+  storageClassName: managed-premium    # The StorageClass to use for the volume. This defines the type of storage to use
+  resources:                           
+    requests:                          
+      storage: 2Gi                     # The amount of storage requested for the PVC, in this case, 2 GiB
+
