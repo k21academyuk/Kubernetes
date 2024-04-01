@@ -1,22 +1,22 @@
-kind: Pod
-apiVersion: v1
-metadata:
-  name: mypod
-spec:
-  containers:
-  - name: mypod
-    image: nginx:1.15.5
-    resources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-      limits:
-        cpu: 250m
-        memory: 256Mi
-    volumeMounts:
-    - mountPath: "/mnt/azure"
-      name: volume
-  volumes:
-    - name: volume
-      persistentVolumeClaim:
-        claimName: azure-managed-disk
+kind: Pod                              # Specifies that this document is intended to create a Pod
+apiVersion: v1                         # The version of the Kubernetes API to use
+metadata:                              
+  name: mypod                          # The name of the Pod within the Kubernetes cluster
+spec:                                  
+  containers:                          
+  - name: mypod                        # The name of the container within the Pod
+    image: nginx:1.15.5                # The Docker image to use for the container
+    resources:                         
+      requests:                        
+        cpu: 100m                      # Minimum amount of CPU the container can use
+        memory: 128Mi                  # Minimum amount of memory the container can use
+      limits:                          
+        cpu: 250m                      # Maximum amount of CPU the container is allowed to use
+        memory: 256Mi                  # Maximum amount of memory the container is allowed to use
+    volumeMounts:                      
+    - mountPath: "/mnt/azure"          # The path within the container where the volume will be mounted
+      name: volume                     # The name of the volume to mount
+  volumes:                             
+    - name: volume                     # The name of the volume being defined
+      persistentVolumeClaim:           
+        claimName: azure-managed-disk  # The name of the PersistentVolumeClaim to bind to
