@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment                               # Specifies that this document is intended to create a Deployment
+metadata:
+  name: mydeployment                           # The name of the Deployment within the Kubernetes cluster
+spec:
+  replicas: 1                                 # Number of desired replicas for the Deployment
+  selector:
+    matchLabels:
+      app: myapp                              # Labels to select Pods for this Deployment
+  template:
+    metadata:
+      labels:
+        app: myapp                           # Labels applied to Pods created by this Deployment
+    spec:
+      containers:
+      - name: mypod                           # The name of the container within the Pod
+        image: nginx:latest                  # The Docker image to use for the container
+        resources:
+          requests:
+            cpu: 100m                        # Minimum amount of CPU the container can use
+            memory: 128Mi                    # Minimum amount of memory the container can use
+          limits:
+            cpu: 250m                        # Maximum amount of CPU the container is allowed to use
+            memory: 256Mi                    # Maximum amount of memory the container is allowed to use
+        volumeMounts:
+        - mountPath: "/mnt/azure"            # The path within the container where the volume will be mounted
+          name: volume                       # The name of the volume to mount
+      volumes:
+      - name: volume                         # The name of the volume being defined
+        persistentVolumeClaim:
+          claimName: azure-managed-disk      # The name of the PersistentVolumeClaim to bind to
