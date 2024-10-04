@@ -1,22 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: sts-service
+  name: mysql
 spec:
-  selector:
-    app: my-app
   ports:
-    - name: k21-port
-      protocol: TCP
-      port: 80
-      targetPort: 80
-      nodePort: 30080
-    - name: mysql-port
-      protocol: TCP
-      port: 3306
-      targetPort: 3306
-      nodePort: 30306
-  type: NodePort
+  - port: 3306
+    name: mysql
+  clusterIP: None
+  selector:
+    app: mysql
 
 ---
 apiVersion: apps/v1
@@ -35,13 +27,6 @@ spec:
         app: my-app
     spec:
       containers:
-        - name: my-container
-          image: 11905510/k21academy:1.0
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: nginx-volume
-              mountPath: /var/www/html
         - name: mysql-container
           image: mysql:latest
           ports:
@@ -53,14 +38,6 @@ spec:
             - name: mysql-volume
               mountPath: /var/lib/mysql
   volumeClaimTemplates:
-    - metadata:
-        name: nginx-volume
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName:  managed-nfs-storage
-        resources:
-          requests:
-            storage: 1Gi
     - metadata:
         name: mysql-volume
       spec:
