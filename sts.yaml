@@ -1,48 +1,54 @@
+# Headless Service to give each MySQL pod a stable network identity
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql           # This is the name of the service
 spec:
   ports:
-  - port: 3306
-    name: mysql
-  clusterIP: None
+    - port: 3306        # MySQL default port
+      name: mysql       # Label for the port
+  clusterIP: None       # Makes it a headless service, allowing direct access to each pod
   selector:
-    app: mysql
+    app: my-app         # Matches pods with this label to route traffic
 
 ---
+# StatefulSet to manage MySQL pods with persistent storage
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: web-statefulset
+  name: web-statefulset     # Name of the StatefulSet
 spec:
-  serviceName: sts-service
-  replicas: 3
+  serviceName: mysql        # Links this StatefulSet to the headless service above
+  replicas: 3               # Number of MySQL instances (pods) to create
   selector:
     matchLabels:
-      app: my-app
+      app: my-app           # Matches labels on pods for the StatefulSet
+
+  # Template for the pods managed by this StatefulSet
   template:
     metadata:
       labels:
-        app: my-app
+        app: my-app         # Labels assigned to the pods for matching with the Service
     spec:
       containers:
-        - name: mysql-container
-          image: mysql:latest
+        - name: mysql-container  # Name of the MySQL container inside each pod
+          image: mysql:latest    # MySQL image to use
           ports:
-            - containerPort: 3306
+            - containerPort: 3306        # Expose the MySQL port inside the pod
           env:
-            - name: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_ROOT_PASSWORD  # MySQL root password (use a secure password in production)
               value: mypassword
           volumeMounts:
-            - name: mysql-volume
-              mountPath: /var/lib/mysql
+            - name: mysql-volume         # Volume where MySQL data is stored
+              mountPath: /var/lib/mysql  # Path in the container for storing MySQL data
+
+  # Define storage for each MySQL pod
   volumeClaimTemplates:
     - metadata:
-        name: mysql-volume
+        name: mysql-volume              # Name of the volume used by each pod
       spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName:  managed-nfs-storage
+        accessModes: ["ReadWriteOnce"]  # Only one pod can use the volume at a time
+        storageClassName: managed-nfs-storage  # Storage class for the volume
         resources:
           requests:
-            storage: 2Gi
+            storage: 2Gi                # Size of the storage for each MySQL pod
